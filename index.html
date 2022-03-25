@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <title>01 Map</title>
+    <meta name="description" content="Project 01: Map" />
+    <meta name="author" content="Thomas Robinson" />
+
+    <!-- Font Awesome Kit -->
+    <script
+      src="https://kit.fontawesome.com/8633518a11.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Leaflet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      defer
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <!-- Other CSS -->
+    <link rel="stylesheet" href="main.css" />
+    <!-- JS -->
+    <script src="countries.js"></script>
+
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="header">
+        <i class="globe"></i>
+        <h1 class="logo title">01 mApp</h1>
+      </div>
+
+      <form class="form">
+        <button class="random-country-btn" type="button" name="button">
+          RANDOM COUNTRY
+        </button>
+      </form>
+      <ul class="countries guesses--ul countries-guesses-container"></ul>
+      <h2>PAST GUESSES</h2>
+      <!-- the below html shows past history of guesses -->
+      <ul class="countries records"></ul>
+
+      <p class="copyright">
+        &copy; Created by
+        <!-- TODO: addlinkedin link -->
+        <a target="_blank" href="#">Thomas Robinson</a>.
+      </p>
+    </div>
+
+    <div id="map"></div>
+  </body>
+</html>
