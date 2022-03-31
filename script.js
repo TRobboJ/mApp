@@ -7,6 +7,7 @@ const globeIcon = document.querySelector(".globe");
 
 class App {
   //default map variables
+  // Using #hashes before variable names is non standard from my experience. I could be wrong though.
   #map;
   #defaultZoom = 3;
   #maxZoom = 7;
@@ -65,6 +66,10 @@ class App {
     const countryName = (this.#answer = this._getRandomCountry());
     const outlineOptions = this.#outlineOptions;
     const map = this.#map;
+    
+    // As long as you use arrow functions, 'this' should refer to original class.
+    // Only traditional functions overwrite the value of 'this' as they create their own scope.
+    // Before arrow functions older code often uses other workarounds such as
 
     fetch(
       "https://nominatim.openstreetmap.org/search?country=" +
@@ -83,6 +88,7 @@ class App {
     this.#layer.remove();
   }
   _removeGuessList() {
+    // guessUl.innerHTML = '' or guessUl.replaceChildren() would be more performant. Fewer loops = better.
     while (guessesUl.hasChildNodes()) {
       guessesUl.removeChild(guessesUl.firstChild);
     }
@@ -90,22 +96,22 @@ class App {
   _randomNumberGenerator(arr) {
     return Math.floor(Math.random() * arr.length);
   }
-  _getRandomCountry() {
-    let random;
-    // countries array is defined in countries.js file
-    if (!this.#answer)
-      return this.arrayDifficulty[
-        this._randomNumberGenerator(this.arrayDifficulty)
-      ];
-    if (this.#answer) {
-      //the else clause ensures that any newly generated random country isn't the same as the current answer
-      random = this._randomNumberGenerator(this.arrayDifficulty);
-      while (this.arrayDifficulty[random] === this.#answer) {
+  _getRandomCountries() {
+    const indexes = [];
+    const countries = [];
+    while (this.guessDifficulty.length >= countries.length) {
+      const random = this._randomNumberGenerator(this.arrayDifficulty);
+      // Continue to generate X new answers that:
+      // aren't the same as the current answer
+      // aren't already in the list of answers
+      if (this.arrayDifficulty[random] !== this.#answer && !countries.includes(random)) {
         console.log(this.arrayDifficulty[random], this.#answer);
         random = this._randomNumberGenerator(this.arrayDifficulty);
+        countries.push(this.arrayDifficulty[random]);
+        indexes.push(random);
       }
-      return this.arrayDifficulty[random];
     }
+    return countries;
   }
   _moveMapToCountry(data) {
     if (!data) return;
@@ -120,16 +126,17 @@ class App {
     });
   }
   _renderGuessList(guess) {
+    const countries = this._getRandomCountries();
     //add current country(answer) as a guess
     let html = `<li class="country" data-id="${guess.id}">
       <h2 class="country__title">${guess.countryName}</h2>
     </li>`;
     //add random 3-4 other countries as guesses (dependant on this.guessDifficulty)
-    for (let i = 0; i < this.guessDifficulty; i++) {
+    for (let i = 0; i < countries.length; i++) {
       html += `<li class="country" data-id="${Math.floor(
         Math.random() * Date.now()
       )}">
-        <h2 class="country__title">${this._getRandomCountry()}</h2>
+        <h2 class="country__title">${countries[i]}</h2>
       </li>`;
     }
     //append list elements to ul with clickable element that calls _newGuess()
