@@ -6,7 +6,7 @@ TODO & current issues
 
 html and css rewrite (currently using Jonathan's CSS template)
 
-add load event to fetch + catch function (atm you can spam click randomise)
+add load event to fetch + catch function (atm you can spam click randomise) (change to async/await)
 
 fix mApp call within the then() block (should call "this")
 
