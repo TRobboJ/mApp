@@ -4,16 +4,10 @@ A country guessing game using Leaflet, written with vanilla JS
 
 TODO & current issues
 
-html and css rewrite (currently using Jonathan's CSS template)
+html and css rewrite
 
 add load event to fetch + catch function (atm you can spam click randomise) (change to async/await)
 
-fix mApp call within the then() block (should call "this")
-
-multiple countries of the same guess can be called with my _getRandomCountry function
-
-add dark version option of carto's tilemap
-
-remove random country button after first click -> change to "start"?
+add dark version option of carto's tilemap (API added)
 
 easy, med, hard option selection
