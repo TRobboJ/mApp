@@ -25,12 +25,12 @@
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""
     ></script>
-    <!-- Other CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="main.css" />
     <!-- JS -->
-    <script src="countries.js"></script>
+    <script type="module" src="config.js"></script>
 
-    <script defer src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </head>
   <body>
     <div class="sidebar">
@@ -40,8 +40,8 @@
       </div>
 
       <form class="form">
-        <button class="random-country-btn" type="button" name="button">
-          RANDOM COUNTRY
+        <button class="start-btn" type="button" name="button">
+          START
         </button>
       </form>
       <ul class="countries guesses--ul countries-guesses-container"></ul>

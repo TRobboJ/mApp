@@ -1,4 +1,11 @@
-const countriesAll = [
+export const OPEN_STREET_MAP_API = `https://nominatim.openstreetmap.org/search`;
+export const TILEMAP_LIGHT = `https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png`;
+export const TILEMAP_LIGHT_ATTRIBUTION = `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`;
+export const TILEMAP_DARK = `https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png`;
+export const TILEMAP_DARK_ATTRIBUTION = `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`;
+export const TILEMAP_SUBDOMAINS = `abcd`;
+
+export const COUNTRIES_ALL = [
   "United Arab Emirates",
   "Afghanistan",
   "Antigua and Barbuda",
@@ -23,7 +30,7 @@ const countriesAll = [
   "Bahrain",
   "Burundi",
   "Benin",
-  "Saint-Barthélemy",
+  // "Saint-Barthélemy",
   "Bermuda",
   "Brunei Darussalam",
   "Bolivia",
@@ -36,12 +43,12 @@ const countriesAll = [
   "Belarus",
   "Belize",
   "Canada",
-  "Cocos (Keeling) Islands",
-  "Democratic Republic of the Congo (Congo-Kinshasa, former Zaire)",
+  "Cocos Islands",
+  "Democratic Republic of the Congo",
   "Centrafrican Republic",
-  "Republic of the Congo (Congo-Brazzaville)",
+  "Republic of the Congo",
   "Switzerland",
-  "Côte d'Ivoire",
+  // "Côte d'Ivoire",
   "Cook Islands",
   "Chile",
   "Cameroon",
@@ -50,7 +57,7 @@ const countriesAll = [
   "Costa Rica",
   "Cuba",
   "Cabo Verde",
-  "Curaçao",
+  // "Curaçao",
   "Christmas Island",
   "Cyprus",
   "Czech Republic",
@@ -137,14 +144,14 @@ const countriesAll = [
   "Monaco",
   "Moldova",
   "Montenegro",
-  "Saint Martin (French part)",
+  "Saint Martin",
   "Madagascar",
   "Marshall Islands",
   "North Macedonia",
   "Mali",
   "Myanmar",
   "Mongolia",
-  "Macao (SAR of China)",
+  "Macao",
   "Northern Mariana Islands",
   "Martinique",
   "Mauritania",
@@ -201,13 +208,13 @@ const countriesAll = [
   "Slovakia",
   "Sierra Leone",
   "San Marino",
-  "Sénégal",
+  // "Sénégal",
   "Somalia",
   "Suriname",
-  "São Tomé and Príncipe",
+  // "São Tomé and Príncipe",
   "South Sudan",
   "El Salvador",
-  "Saint Martin (Dutch part)",
+  "Saint Martin",
   "Syria",
   "eSwatini",
   "Turks and Caicos Islands",
@@ -248,7 +255,7 @@ const countriesAll = [
   "Zambia",
   "Zimbabwe",
 ];
-const countriesEasy = [
+export const COUNTRIES_EASY = [
   "United Arab Emirates",
   "Afghanistan",
   "Austria",
@@ -310,4 +317,4 @@ const countriesEasy = [
   "South Africa",
 ];
 
-const globe = ["americas", "africa", "asia", "europe", "oceania"];
+export const GLOBES = ["americas", "africa", "asia", "europe", "oceania"];
