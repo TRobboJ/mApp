@@ -19,23 +19,23 @@ const globeIcon = document.querySelector(".globe");
 
 class App {
   //default map variables
-  #map;
-  #defaultZoom = 3;
-  #maxZoom = 7;
-  #countryZoom = 4;
-  #coords = [0, 0];
+  _map;
+  _defaultZoom = 3;
+  _maxZoom = 7;
+  _countryZoom = 4;
+  _coords = [0, 0];
   //polygon options
-  #outlineOptions = {
+  _outlineOptions = {
     color: "purple",
     weight: 5,
     opacity: 0.8,
     fillOpacity: 0.2,
   };
-  #layer;
+  _layer;
   //arrays to store previous answers
-  #pastQuestions = [];
-  #pastGuesses = [];
-  #answer;
+  _pastQuestions = [];
+  _pastGuesses = [];
+  _answer;
   //editable options for difficulty
   guessDifficulty = 6; //changes amount of guess elements loaded to sidebar
   arrayDifficulty = COUNTRIES_ALL; //changes which country array is loaded -> change to 'COUNTRIES_EASY' if you like
@@ -50,7 +50,7 @@ class App {
     guessesContainer.addEventListener("click", this._newGuess.bind(this));
   }
   _renderMap() {
-    this.#map = L.map("map").setView(this.#coords, this.#defaultZoom);
+    this._map = L.map("map").setView(this._coords, this._defaultZoom);
 
     L.tileLayer(
       //light version of carto's tilemap.
@@ -58,10 +58,10 @@ class App {
       {
         attribution: TILEMAP_LIGHT_ATTRIBUTION,
         subdomains: TILEMAP_SUBDOMAINS,
-        maxZoom: this.#maxZoom,
-        minZoom: this.#defaultZoom,
+        maxZoom: this._maxZoom,
+        minZoom: this._defaultZoom,
       }
-    ).addTo(this.#map);
+    ).addTo(this._map);
   }
   _renderTurn() {
     this._hideBtn();
@@ -69,7 +69,7 @@ class App {
     this._removeGuessList();
     this._renderCountryBorder();
     this._createAnswerAsObject();
-    if (!this.#layer) return;
+    if (!this._layer) return;
     this._removeCountryBorder();
     this._globeRandomise();
   }
@@ -78,22 +78,22 @@ class App {
   }
   _renderCountryBorder() {
     const _this = this;
-    const countryName = this.#answer;
-    const outlineOptions = this.#outlineOptions;
-    const map = this.#map;
-
+    const countryName = this._answer;
+    const outlineOptions = this._outlineOptions;
+    const map = this._map;
+    console.log(countryName)
     fetch(
       `${OPEN_STREET_MAP_API}?country=${countryName.trim()}&polygon_geojson=1&format=json`
     )
       .then((response) => response.json())
-      .then(function (data) {
+      .then(function (data) {        
         _this._moveMapToCountry(data);
-        _this.#layer = L.geoJSON(data[0].geojson, outlineOptions).addTo(map);
+        _this._layer = L.geoJSON(data[0].geojson, outlineOptions).addTo(map);
       });
   }
 
   _removeCountryBorder() {
-    this.#layer.remove();
+    this._layer.remove();
   }
   _removeGuessList() {
     guessesUl.innerHTML = "";
@@ -102,7 +102,7 @@ class App {
     return Math.floor(Math.random() * arr.length);
   }
   _getNewAnswer() {
-    this.#answer = this.arrayDifficulty[
+    this._answer = this.arrayDifficulty[
       this._randomNumberGenerator(this.arrayDifficulty)
     ];
   }
@@ -113,7 +113,7 @@ class App {
     while (this.guessDifficulty >= countries.length) {
       let random = this._randomNumberGenerator(this.arrayDifficulty);
       if (
-        this.arrayDifficulty[random] !== this.#answer &&
+        this.arrayDifficulty[random] !== this._answer &&
         !countries.includes(random)
       ) {
         random = this._randomNumberGenerator(this.arrayDifficulty);
@@ -126,7 +126,7 @@ class App {
   }
   _moveMapToCountry(data) {
     if (!data) return;
-    this.#map.flyTo([data[0].lat, data[0].lon], this.#countryZoom, {
+    this._map.flyTo([data[0].lat, data[0].lon], this._countryZoom, {
       animate: true,
       pan: {
         duration: 0.5,
@@ -159,26 +159,26 @@ class App {
     }
   }
   _createAnswerAsObject() {
-    if (!this.#answer) return;
-    let guess = new Guess(this.#answer);
-    this.#pastQuestions.push(guess);
+    if (!this._answer) return;
+    let guess = new Guess(this._answer);
+    this._pastQuestions.push(guess);
     this._renderGuessList(guess);
   }
   _newGuess(event) {
     //make sure the map is loaded first
-    if (!this.#map) return;
+    if (!this._map) return;
     const guessEl = event.target.closest(".country");
     //return if clicks happen other than on one of the guessable countries
     if (!guessEl) return;
     let answer;
 
-    if (guessEl.innerText === this.#answer)
-      answer = new Guess(this.#answer, "correct");
-    if (guessEl.innerText !== this.#answer)
-      answer = new Guess(this.#answer, "wrong");
+    if (guessEl.innerText === this._answer)
+      answer = new Guess(this._answer, "correct");
+    if (guessEl.innerText !== this._answer)
+      answer = new Guess(this._answer, "wrong");
 
     //save guesses to array (for local storage)
-    this.#pastGuesses.push(answer);
+    this._pastGuesses.push(answer);
     //remove map polygon_geojson
     this._removeCountryBorder();
     // Render past guesses on the list
@@ -204,7 +204,7 @@ class App {
     records.insertAdjacentHTML("afterbegin", html);
   }
   _setLocalStorage() {
-    localStorage.setItem("countryGuesses", JSON.stringify(this.#pastGuesses));
+    localStorage.setItem("countryGuesses", JSON.stringify(this._pastGuesses));
   }
 
   _getLocalStorage() {
@@ -212,9 +212,9 @@ class App {
 
     if (!savedData) return;
 
-    this.#pastGuesses = savedData;
+    this._pastGuesses = savedData;
 
-    this.#pastGuesses.forEach((guess) => {
+    this._pastGuesses.forEach((guess) => {
       this._renderPastGuesses(guess);
     });
   }
