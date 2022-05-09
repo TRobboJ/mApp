@@ -12,6 +12,7 @@ import {
 } from "./config.js";
 
 const startBtn = document.querySelector(".start-btn");
+const scrollHint = document.querySelector(".scroll-hint");
 const records = document.querySelector(".records");
 const guessesUl = document.querySelector(".guesses--ul");
 const guessesContainer = document.querySelector(".countries-guesses-container");
@@ -75,6 +76,7 @@ class App {
   }
   _hideBtn() {
     startBtn.classList.add("hidden");
+    scrollHint.classList.remove("hidden");
   }
   _renderCountryBorder() {
     const _this = this;
@@ -194,7 +196,7 @@ class App {
     //just a fun function to randomise the globe at the top of the screen (next to 01 mApp)
     //globe array is defined in countries.js file
     let random = this._randomNumberGenerator(GLOBES);
-    let html = `<i class="fa-solid fa-earth-${GLOBES[random]} fa-5x logo globe"></i>`;
+    let html = `<i class="fa-solid fa-earth-${GLOBES[random]} fa-3x logo globe"></i>`;
     globeIcon.innerHTML = html;
   }
   _renderPastGuesses(guess) {
@@ -231,7 +233,6 @@ const mApp = new App();
 class Guess {
   //I had originally planned to select the correct guess based on the ID.
   //Instead I used the innerText of the country name to match with answer.
-  //Will likely remove later.
   id;
 
   constructor(countryName, status) {
@@ -243,20 +244,3 @@ class Guess {
     return Math.trunc(Math.random() * Date.now());
   }
 }
-
-//TEST DATA
-// const guess1 = new Guess("Australia", "correct");
-// const guess2 = new Guess("Ireland", "wrong");
-// mApp._renderPastGuesses(guess1);
-// mApp._renderPastGuesses(guess2);
-
-//TODO
-//html and css rewrite (currently using Jonathan's CSS template)
-//add load event to fetch + catch function (atm you can spam click randomise)
-//fix mApp call within the then() block (should call "this")
-//multiple countries of the same guess can be called with my _getRandomCountry function
-//add dark version option of carto's tilemap
-//remove random country button after first click -> change to "start"?
-
-//MAYBE
-//easy, med, hard? arrays?

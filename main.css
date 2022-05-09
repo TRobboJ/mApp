@@ -1,86 +1,107 @@
-/* using Jonathon's CSS template. Will create own template in the future */
 :root {
-  --color-brand--1: #00c46a;
+  --dark: #30343F;
+  --light: #FAFAFF;
+    
+  --col-primary: #273469;
+  --col-secondary: #416788; 
 
-  --color-brand--2: rgb(195, 70, 70);
-  --color-brand--3: #ffb545;
+  --light-col: #d9f0ff;
+  --dark-col: #1E2749; 
 
-  --color-dark--1: #2d3439;
-  --color-dark--2: #42484d;
-  --color-light--1: #aaa;
-  --color-light--2: #ececec;
-  --color-light--3: rgb(214, 222, 224);
+  --col-correct: #00c46a;
+  --col-incorrect: rgb(195, 70, 70);
+
+  --link-col: #81D2C7;
+  --link-clicked: #E0E0E2;
 }
 
 * {
   margin: 0;
   padding: 0;
-  box-sizing: inherit;
-}
-
-html {
-  font-size: 62.5%;
   box-sizing: border-box;
 }
 
+/* html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+} */
+
 body {
-  font-family: "Manrope", sans-serif;
-  color: var(--color-light--2);
+  
+  color: var(--light);
+  background-color: var(--light-col);
+  font-family: 'Roboto', sans-serif, 'Times New Roman', Times, serif;
+  font-size: 1.3215rem;
+  /* line-height: 1.6; */
+  display: flex;
+  height: 100vh;
+  
+
+  /* font-family: "Manrope", sans-serif;
+ 
   font-weight: 400;
   line-height: 1.6;
   height: 100vh;
   overscroll-behavior-y: none;
 
-  background-color: #fff;
+  
   padding: 2.5rem;
 
-  display: flex;
+  display: flex; */
 }
+
 
 /* GENERAL */
 a:link,
 a:visited {
-  color: var(--color-brand--3);
+  color: var(--link-clicked);
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 /* SIDEBAR */
 .sidebar {
-  flex-basis: 50rem;
-  background-color: var(--color-dark--1);
-  padding: 3rem 5rem 4rem 5rem;
+  background-color: var(--dark);
   display: flex;
   flex-direction: column;
+  max-width: 420px;
+  width: 100%;
+
+  /* flex-basis: 50rem;
+  
+  padding: 3rem 5rem 4rem 5rem; */
+  
+}
+.header{
+  align-items: center;
+  margin: 1.5rem 0;
+  padding: 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 .logo,
 .title {
   display: flex;
-  justify-content: center;
+  
   align-items: center;
+  
 }
 .logo {
-  height: 5.2rem;
-  /* align-self: center; */
+  height: 2rem;
+  justify-content: center;
 }
 .title {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 800;
+  justify-content: left;
 }
-.header {
-  margin-bottom: 4rem;
-  border-radius: 5px;
-  padding: 1.5rem 2.75rem;
-  margin-bottom: 1.75rem;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem 2.5rem;
-}
+
 .countries {
   list-style: none;
-  height: 77vh;
+  
+  height: 75vh;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -89,28 +110,32 @@ a:visited {
   width: 0;
 }
 
-.country {
-  background-color: var(--color-dark--2);
-  border-radius: 5px;
-  padding: 1.5rem 2.25rem;
-  margin-bottom: 1.75rem;
-  cursor: pointer;
 
-  display: grid;
+.country {
+  background-color: var(--col-secondary);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  margin: 0 auto 1rem;
+  
+  width: 70%;
+  cursor: pointer;
+  
+
+  /* display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 0.75rem 1.5rem;
+  gap: 0.75rem 1.5rem; */
 }
 .country--wrong {
-  border-left: 5px solid var(--color-brand--2);
+  border-left: 8px solid var(--col-incorrect);
 }
 .country--correct {
-  border-left: 5px solid var(--color-brand--1);
+  border-left: 8px solid var(--col-correct);
 }
 
 .country__title {
-  font-size: 1.7rem;
-  font-weight: 600;
-  grid-column: 1 / -1;
+  font-size: 1.2rem;
+  font-weight: 500;
+  justify-content: left;
 }
 
 .country__details {
@@ -131,77 +156,69 @@ a:visited {
 
 .country__unit {
   font-size: 1.1rem;
-  color: var(--color-light--1);
+  color: var(--light-col);
   text-transform: uppercase;
   font-weight: 800;
 }
 
-.form {
-  /* background-color: var(--color-dark--2); */
-  border-radius: 5px;
-  padding: 1.5rem 2.75rem;
-  margin-bottom: 1.75rem;
 
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.5rem 2.5rem;
-
-  /* Match height and activity boxes */
-  height: 9.25rem;
-  transition: all 0.5s, transform 1ms;
-}
 
 .start-btn {
-  border-radius: 20px;
-  background-color: var(--color-light--3);
-  color: var(--color-dark--1);
+  border-radius: 10px;
+  background-color: var(--light-col);
+  color: var(--dark);
   font-size: 2rem;
   font-weight: 600;
   border: none;
+  width: 60%;
+  margin: 0 auto;
 }
 .start-btn:active {
-  background-color: var(--color-dark--1);
-  color: var(--color-light--3);
+  background-color: var(--dark);
+  color: var(--light-col);
 }
-
-.records {
-  padding: 5px;
-  margin-bottom: 1rem;
-  height: 210px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  text-align: justify;
-  background-color: var(--color-light--3);
+.scroll-hint{
+  font-size: 0.8rem;
+  margin: 0 auto;
 }
-
-.copyright {
-  margin-top: auto;
-  font-size: 1.3rem;
+.records--break{
+  border-top: 2px solid var(--light);
+}
+.records--title{
   text-align: center;
-  color: var(--color-light--1);
+  padding: 0.2rem 0;
+}
+.records {
+  /* padding: 5px;
+  margin-bottom: 0.5rem; */
+  max-height: 180px;
+
+
+  overflow-x: scroll;
+  overflow-y: auto;
+ 
+  background-color: var(---light-col);
 }
 
-.twitter-link:link,
-.twitter-link:visited {
-  color: var(--color-light--1);
-  transition: all 0.2s;
+.ack {
+  margin: 0.1rem 0;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--light-col);
 }
 
-.twitter-link:hover,
-.twitter-link:active {
-  color: var(--color-light--2);
-}
+
 
 /* MAP */
 #map {
   flex: 1;
   height: 100%;
-  background-color: var(--color-light--1);
+  background-color: var(--light-col);
 }
 
 /* Popup width is defined in JS using options */
 .leaflet-popup .leaflet-popup-content-wrapper {
-  background-color: var(--color-dark--1);
+  background-color: var(--dark-col);
   color: var(--color-light--2);
   border-radius: 5px;
   padding-right: 0.6rem;
@@ -212,12 +229,12 @@ a:visited {
 }
 
 .leaflet-popup .leaflet-popup-tip {
-  background-color: var(--color-dark--1);
+  background-color: var(--dark-col);
 }
 
 .running-popup .leaflet-popup-content-wrapper {
-  border-left: 5px solid var(--color-brand--2);
+  border-left: 5px solid var(--col-primary);
 }
 .cycling-popup .leaflet-popup-content-wrapper {
-  border-left: 5px solid var(--color-brand--1);
+  border-left: 5px solid var(--col-primary);
 }
