@@ -14,7 +14,7 @@ import {
 const startBtn = document.querySelector(".start-btn");
 const scrollHint = document.querySelector(".scroll-hint");
 const records = document.querySelector(".records");
-const guessesUl = document.querySelector(".guesses--ul");
+const guessesUl = document.querySelector(".guesses__ul");
 const guessesContainer = document.querySelector(".countries-guesses-container");
 const globeIcon = document.querySelector(".globe");
 const darkModeBtn = document.querySelector("#dark-mode");
@@ -68,7 +68,7 @@ class App {
       tileMap = TILEMAP_LIGHT;
       tileMapAttribution = TILEMAP_LIGHT_ATTRIBUTION;
     }
-    console.log(this._darkMode);
+    
 
     L.tileLayer(
       //light version of carto's tilemap.
@@ -211,8 +211,8 @@ class App {
   }
   _toggleDarkMode() {
     this._darkMode = !this._darkMode;
-    this._setLocalStorage();
-    this.reset();
+    this._setLocalStorageDarkMode();
+    this.reloadPage();
   }
   _renderDarkModeIcon()
   {
@@ -229,35 +229,39 @@ class App {
     globeIcon.innerHTML = html;
   }
   _renderPastGuesses(guess) {
-    let html = `<li class="country country--${guess.status}" data-id="${guess.id}">
+    let html = `<li class="country country__${guess.status}" data-id="${guess.id}">
       <h2 class="country__title">${guess.countryName}</h2>
     </li>`;
     records.insertAdjacentHTML("afterbegin", html);
   }
   _setLocalStorage() {
     localStorage.setItem("countryGuesses", JSON.stringify(this._pastGuesses));
+    
+  }
+  _setLocalStorageDarkMode(){
     localStorage.setItem("darkMode", this._darkMode);
   }
 
   _getLocalStorage() {
     const savedData = JSON.parse(localStorage.getItem("countryGuesses"));
-    const darkMode = JSON.parse(localStorage.getItem("darkMode"));
+    let darkMode = JSON.parse(localStorage.getItem("darkMode"));
 
-    if (!savedData || !darkMode) return;
+    if(!darkMode) {darkMode = false};
     this._darkMode = darkMode;
+    if (!savedData) return;
     this._pastGuesses = savedData;
 
     this._pastGuesses.forEach((guess) => {
       this._renderPastGuesses(guess);
     });
   }
-
-  reset() {
-    //call to remove all past guesses from storage and reload page
-    // const resetStorage = false;
-    // if (resetStorage){
-    //   localStorage.removeItem("countryGuesses");
-    // }
+  reloadPage(){
+    //call to reload page only
+    location.reload();
+  }
+  resetAll() {
+    // call to remove all past guesses from storage and reload page
+    localStorage.removeItem("countryGuesses");
     location.reload();
   }
 }

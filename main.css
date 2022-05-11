@@ -21,37 +21,16 @@
   box-sizing: border-box;
 }
 
-/* html {
-  font-size: 62.5%;
-  box-sizing: border-box;
-} */
-
 body {
   
   color: var(--light);
   background-color: var(--light-col);
   font-family: 'Roboto', sans-serif, 'Times New Roman', Times, serif;
   font-size: 1.3215rem;
-  /* line-height: 1.6; */
   display: flex;
   height: 100vh;
-  
-
-  /* font-family: "Manrope", sans-serif;
- 
-  font-weight: 400;
-  line-height: 1.6;
-  height: 100vh;
-  overscroll-behavior-y: none;
-
-  
-  padding: 2.5rem;
-
-  display: flex; */
 }
 
-
-/* GENERAL */
 a:link,
 a:visited {
   color: var(--link-clicked);
@@ -60,19 +39,18 @@ a:visited {
 .hidden {
   display: none !important;
 }
-/* SIDEBAR */
+
+/* Sidebar Styling */
 .sidebar {
   background-color: var(--dark);
   display: flex;
   flex-direction: column;
   max-width: 420px;
-  width: 100%;
-
-  /* flex-basis: 50rem;
-  
-  padding: 3rem 5rem 4rem 5rem; */
-  
+  width: 100%;  
 }
+
+/* Title and Logo Styling */
+
 .header{
   align-items: center;
   margin: 1.5rem 0;
@@ -80,6 +58,7 @@ a:visited {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+
 .logo,
 .title {
   display: flex;
@@ -87,35 +66,41 @@ a:visited {
   align-items: center;
   
 }
+
 .logo {
   height: 2rem;
   justify-content: center;
 }
+
 .title {
   font-size: 2rem;
   font-weight: 800;
   justify-content: left;
 }
-.dark-mode{
-  
-  padding: 1rem;
-  position: absolute;
-  border-radius: 100px;
-  top: 2%;
-  right: 2%;
-  z-index: 1000;
+
+/* Button Styling */
+
+.start-btn {
+  border-radius: 10px;
+  background-color: var(--light-col);
+  color: var(--dark);
+  font-size: 2rem;
+  font-weight: 600;
+  border: none;
+  width: 60%;
+  margin: 0 auto;
 }
-.dark-mode:hover{
+
+.start-btn:hover{
   cursor: pointer;
 }
-.dm-off{
+
+.start-btn:active {
   background-color: var(--dark);
-  color: var(--light);
+  color: var(--light-col);
 }
-.dm-on{
-  background-color: var(--light);
-  color: var(--dark);
-}
+
+/* Guess Selection Styling */
 
 .countries {
   list-style: none;
@@ -129,25 +114,20 @@ a:visited {
   width: 0;
 }
 
-
 .country {
   background-color: var(--col-secondary);
   border-radius: 8px;
   padding: 0.5rem 1rem;
-  margin: 0 auto 1rem;
-  
+  margin: 0 auto 1rem;  
   width: 70%;
   cursor: pointer;
-  
-
-  /* display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 0.75rem 1.5rem; */
 }
-.country--wrong {
+
+.country__wrong {
   border-left: 8px solid var(--col-incorrect);
 }
-.country--correct {
+
+.country__correct {
   border-left: 8px solid var(--col-correct);
 }
 
@@ -180,84 +160,59 @@ a:visited {
   font-weight: 800;
 }
 
-
-
-.start-btn {
-  border-radius: 10px;
-  background-color: var(--light-col);
-  color: var(--dark);
-  font-size: 2rem;
-  font-weight: 600;
-  border: none;
-  width: 60%;
-  margin: 0 auto;
-}
-.start-btn:hover{
-  cursor: pointer;
-}
-.start-btn:active {
-  background-color: var(--dark);
-  color: var(--light-col);
-}
 .scroll-hint{
   font-size: 0.8rem;
   margin: 0 auto;
 }
-.records--break{
+
+/* Guess History & Acknowledgements */
+.records__break{
   border-top: 2px solid var(--light);
 }
-.records--title{
+.records__title{
   text-align: center;
   padding: 0.2rem 0;
 }
 .records {
-  /* padding: 5px;
-  margin-bottom: 0.5rem; */
   max-height: 180px;
-
-
   overflow-x: scroll;
-  overflow-y: auto;
- 
+  overflow-y: auto; 
   background-color: var(---light-col);
 }
-
 .ack {
   margin: 0.1rem 0;
-  font-size: 1rem;
+  font-size: 0.7rem;
   text-align: center;
   color: var(--light-col);
 }
 
-
-
-
-/* MAP */
+/* Map */
 #map {
   flex: 1;
   height: 100%;
   background-color: var(--light-col);
 }
 
-/* Popup width is defined in JS using options */
-.leaflet-popup .leaflet-popup-content-wrapper {
-  background-color: var(--dark-col);
-  color: var(--color-light--2);
-  border-radius: 5px;
-  padding-right: 0.6rem;
+.dark-mode{  
+  padding: 1rem;
+  position: absolute;
+  border: none;
+  border-radius: 100px;
+  top: 2%;
+  right: 2%;
+  z-index: 1000;
 }
 
-.leaflet-popup .leaflet-popup-content {
-  font-size: 1.5rem;
+.dark-mode:hover{
+  cursor: pointer;
 }
 
-.leaflet-popup .leaflet-popup-tip {
-  background-color: var(--dark-col);
+.dm-off{
+  background-color: var(--dark);
+  color: var(--light);
 }
 
-.running-popup .leaflet-popup-content-wrapper {
-  border-left: 5px solid var(--col-primary);
-}
-.cycling-popup .leaflet-popup-content-wrapper {
-  border-left: 5px solid var(--col-primary);
+.dm-on{
+  background-color: var(--light);
+  color: var(--dark);
 }
