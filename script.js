@@ -1,5 +1,6 @@
 "use strict";
 import {
+  TEST_ERROR_DATA,
   COUNTRIES_ALL,
   COUNTRIES_EASY,
   GLOBES,
@@ -11,13 +12,18 @@ import {
   TILEMAP_SUBDOMAINS,
 } from "./config.js";
 
-const startBtn = document.querySelector(".start-btn");
+const startBtnContainer = document.querySelector(".start-btn__container");
+const easyBtn = document.querySelector(".easy-btn");
+const hardBtn = document.querySelector(".hard-btn");
 const scrollHint = document.querySelector(".scroll-hint");
+const errorMsg = document.querySelector(".error-msg");
 const records = document.querySelector(".records");
 const guessesUl = document.querySelector(".guesses__ul");
 const guessesContainer = document.querySelector(".countries-guesses-container");
 const globeIcon = document.querySelector(".globe");
-const darkModeBtn = document.querySelector("#dark-mode");
+const darkModeBtn = document.querySelector(".dark-mode");
+const settingsBtn = document.querySelector(".settings");
+const spinnerContainer = document.querySelector(".spinner__container")
 
 class App {
   //default map variables
@@ -42,7 +48,7 @@ class App {
   _answer;
   //editable options for difficulty
   guessDifficulty = 6; //changes amount of guess elements loaded to sidebar
-  arrayDifficulty = COUNTRIES_ALL; //changes which country array is loaded -> change to 'COUNTRIES_EASY' if you like
+  arrayDifficulty; // set through the easy and hard buttons
   
 
 
@@ -52,12 +58,15 @@ class App {
     this._globeRandomise();
     this._renderDarkModeIcon();
     //event listeners
-    startBtn.addEventListener("click", this._renderTurn.bind(this));
+    easyBtn.addEventListener("click", this._setArrayDifficultyEasy.bind(this));
+    hardBtn.addEventListener("click", this._setArrayDifficultyHard.bind(this));
     guessesContainer.addEventListener("click", this._newGuess.bind(this));
     darkModeBtn.addEventListener("click", this._toggleDarkMode.bind(this));
   }
   _renderMap() {
     this._map = L.map("map").setView(this._coords, this._defaultZoom);
+
+    // Set tilemap to light or dark mode (default is lightmode)
     let tileMap;
     let tileMapAttribution;
     if (this._darkMode) {
@@ -69,9 +78,8 @@ class App {
       tileMapAttribution = TILEMAP_LIGHT_ATTRIBUTION;
     }
     
-
+    // Render map using the tilemap
     L.tileLayer(
-      //light version of carto's tilemap.
       tileMap,
       {
         attribution: tileMapAttribution,
@@ -85,32 +93,64 @@ class App {
     this._hideBtn();
     this._getNewAnswer();
     this._removeGuessList();
-    this._renderCountryBorder();
-    this._createAnswerAsObject();
+    this._renderCountryBorder(); //this function also calls createAnswerAsObject(), toggleLoadingSpinner() and moveMapToCountry()
     if (!this._layer) return;
     this._removeCountryBorder();
     this._globeRandomise();
   }
-  _hideBtn() {
-    startBtn.classList.add("hidden");
-    scrollHint.classList.remove("hidden");
-  }
-  _renderCountryBorder() {
-    const _this = this;
-    const countryName = this._answer;
-    const outlineOptions = this._outlineOptions;
-    const map = this._map;
-    console.log(countryName)
-    fetch(
-      `${OPEN_STREET_MAP_API}?country=${countryName.trim()}&polygon_geojson=1&format=json`
-    )
-      .then((response) => response.json())
-      .then(function (data) {        
-        _this._moveMapToCountry(data);
-        _this._layer = L.geoJSON(data[0].geojson, outlineOptions).addTo(map);
-      });
+
+  _setArrayDifficultyEasy(){
+    this.arrayDifficulty = COUNTRIES_EASY; //COUNTRIES_EASY
+    this._renderTurn();
   }
 
+  _setArrayDifficultyHard(){
+    this.arrayDifficulty = COUNTRIES_ALL; //COUNTRIES_ALL
+    this._renderTurn();
+  }
+
+  _hideBtn() {
+    startBtnContainer.classList.add("hidden");
+    scrollHint.classList.remove("hidden");
+  }
+
+  _renderCountryBorder() {
+      const countryName = this._answer;
+      const _this = this;  
+      const outlineOptions = this._outlineOptions;
+      const map = this._map;
+    this._toggleLoadingSpinner();
+        async function getCountryJson(countryName){
+          
+            try{
+                let response = await fetch(`${OPEN_STREET_MAP_API}?country=${countryName.trim()}&polygon_geojson=1&format=json`);
+                if(!response) throw `Error fetching json`
+                return await response.json();
+            }catch (error){
+              throw `Error reaching server: Please refresh and try again. Error: ${error}`
+            }
+          }
+      const response = getCountryJson(countryName);
+      response.then(function(data){
+        //console log the answer for debugging.
+        //console.log(data[0].display_name) 
+        if (data.length === 0) return; 
+        errorMsg.classList.add("hidden");
+        _this._toggleLoadingSpinner();
+        _this._moveMapToCountry(data);
+        _this._layer = L.geoJSON(data[0].geojson, outlineOptions).addTo(map);
+        _this._createAnswerAsObject();
+      }).catch((err)=>{
+        //render again logic
+        console.log(err);
+        _this._errorHandling(`Error fetching country: Trying again...`);
+        _this._renderTurn();
+        _this._toggleLoadingSpinner();
+      })
+  }
+  _toggleLoadingSpinner(){
+    spinnerContainer.classList.toggle("hidden");
+  }
   _removeCountryBorder() {
     this._layer.remove();
   }
@@ -217,7 +257,17 @@ class App {
   _renderDarkModeIcon()
   {
     let html;
-    html = this._darkMode ? `<i class="fa-solid fa-sun dark-mode dm-on"></i>` : `<i class="fa-solid fa-moon dark-mode dm-off" id="dark-mode"></i>`
+    if(this._darkMode){
+      html = `<i class="fa-solid fa-sun dark-mode dm-on"></i>`
+      settingsBtn.classList.remove("dm-off");
+      settingsBtn.classList.add("dm-on");
+    }
+    if (!this._darkMode){
+      html = `<i class="fa-solid fa-moon dark-mode dm-off" id="dark-mode"></i>`
+      settingsBtn.classList.add("dm-off");
+      settingsBtn.classList.remove("dm-on");
+    }
+    
     darkModeBtn.innerHTML = html;
   }
 
@@ -227,6 +277,10 @@ class App {
     let random = this._randomNumberGenerator(GLOBES);
     let html = `<i class="fa-solid fa-earth-${GLOBES[random]} fa-3x logo globe"></i>`;
     globeIcon.innerHTML = html;
+  }
+  _errorHandling(err){
+    errorMsg.innerText = err;
+    errorMsg.classList.remove("hidden");
   }
   _renderPastGuesses(guess) {
     let html = `<li class="country country__${guess.status}" data-id="${guess.id}">

@@ -33,26 +33,40 @@
     <script type="module" src="script.js"></script>
   </head>
   <body>
+
     <div class="sidebar">
-      <i class="fa-solid fa-moon dark-mode dm-off" id="dark-mode"></i>
-      <div class="header">
-        <div><i class="logo globe"></i></div>
-        <h1 class="title">mApp</h1>
+        <i class="fa-solid fa-moon dark-mode dm-off"></i>
+        <i class="fa-solid fa-gear settings dm-off"></i>
+        <div class="header">
+          <div><i class="logo globe"></i></div>
+          <h1 class="title">mApp</h1>
+        </div>
+
+      <div class="start-btn__container">
+        <button class="start-btn easy-btn" type="button" name="button">
+          EASY
+        </button>
+        <button class="start-btn hard-btn" type="button" name="button">
+          HARD
+        </button>
       </div>
-      <button class="start-btn" type="button" name="button">
-        START
-      </button>
-      <!-- Create Second button for HardMode -->
-      
+      <p class="error-msg hidden"></p>
+
+      <div class="spinner__container hidden">
+       <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      </div>
+
       <ul class="countries guesses__ul countries-guesses-container"></ul>
       <p class="scroll-hint hidden">*scroll to see more options!</p>
+      
       <hr class="records__break">
+      
       <h3 class="records__title">HISTORY</h2>
       <!-- the below html shows past history of guesses -->
       <ul class="countries records"></ul>
 
       <p class="ack">
-         Created by
+          Created by
         <!-- TODO: site link -->
         <a target="_blank" href="#">Thomas Robinson</a>.
       </p>
