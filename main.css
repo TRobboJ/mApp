@@ -96,7 +96,26 @@ a:visited {
   font-weight: 800;
   justify-content: left;
 }
-
+.dark-mode{
+  
+  padding: 1rem;
+  position: absolute;
+  border-radius: 100px;
+  top: 2%;
+  right: 2%;
+  z-index: 1000;
+}
+.dark-mode:hover{
+  cursor: pointer;
+}
+.dm-off{
+  background-color: var(--dark);
+  color: var(--light);
+}
+.dm-on{
+  background-color: var(--light);
+  color: var(--dark);
+}
 
 .countries {
   list-style: none;
@@ -173,6 +192,9 @@ a:visited {
   width: 60%;
   margin: 0 auto;
 }
+.start-btn:hover{
+  cursor: pointer;
+}
 .start-btn:active {
   background-color: var(--dark);
   color: var(--light-col);
@@ -206,6 +228,7 @@ a:visited {
   text-align: center;
   color: var(--light-col);
 }
+
 
 
 

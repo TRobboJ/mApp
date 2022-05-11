@@ -144,7 +144,7 @@ export const COUNTRIES_ALL = [
   "Monaco",
   "Moldova",
   "Montenegro",
-  "Saint Martin",
+  // "Saint Martin",
   "Madagascar",
   "Marshall Islands",
   "North Macedonia",

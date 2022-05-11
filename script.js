@@ -17,6 +17,7 @@ const records = document.querySelector(".records");
 const guessesUl = document.querySelector(".guesses--ul");
 const guessesContainer = document.querySelector(".countries-guesses-container");
 const globeIcon = document.querySelector(".globe");
+const darkModeBtn = document.querySelector("#dark-mode");
 
 class App {
   //default map variables
@@ -25,10 +26,12 @@ class App {
   _maxZoom = 7;
   _countryZoom = 4;
   _coords = [0, 0];
+  //toggle for darkmode
+  _darkMode;
   //polygon options
   _outlineOptions = {
     color: "purple",
-    weight: 5,
+    weight: 4,
     opacity: 0.8,
     fillOpacity: 0.2,
   };
@@ -40,24 +43,38 @@ class App {
   //editable options for difficulty
   guessDifficulty = 6; //changes amount of guess elements loaded to sidebar
   arrayDifficulty = COUNTRIES_ALL; //changes which country array is loaded -> change to 'COUNTRIES_EASY' if you like
+  
+
 
   constructor() {
     this._getLocalStorage();
     this._renderMap();
     this._globeRandomise();
-
+    this._renderDarkModeIcon();
     //event listeners
     startBtn.addEventListener("click", this._renderTurn.bind(this));
     guessesContainer.addEventListener("click", this._newGuess.bind(this));
+    darkModeBtn.addEventListener("click", this._toggleDarkMode.bind(this));
   }
   _renderMap() {
     this._map = L.map("map").setView(this._coords, this._defaultZoom);
+    let tileMap;
+    let tileMapAttribution;
+    if (this._darkMode) {
+      tileMap = TILEMAP_DARK;
+      tileMapAttribution = TILEMAP_DARK_ATTRIBUTION;
+    }
+    if (!this._darkMode){
+      tileMap = TILEMAP_LIGHT;
+      tileMapAttribution = TILEMAP_LIGHT_ATTRIBUTION;
+    }
+    console.log(this._darkMode);
 
     L.tileLayer(
       //light version of carto's tilemap.
-      TILEMAP_LIGHT,
+      tileMap,
       {
-        attribution: TILEMAP_LIGHT_ATTRIBUTION,
+        attribution: tileMapAttribution,
         subdomains: TILEMAP_SUBDOMAINS,
         maxZoom: this._maxZoom,
         minZoom: this._defaultZoom,
@@ -192,6 +209,18 @@ class App {
     //render turn again
     this._renderTurn();
   }
+  _toggleDarkMode() {
+    this._darkMode = !this._darkMode;
+    this._setLocalStorage();
+    this.reset();
+  }
+  _renderDarkModeIcon()
+  {
+    let html;
+    html = this._darkMode ? `<i class="fa-solid fa-sun dark-mode dm-on"></i>` : `<i class="fa-solid fa-moon dark-mode dm-off" id="dark-mode"></i>`
+    darkModeBtn.innerHTML = html;
+  }
+
   _globeRandomise() {
     //just a fun function to randomise the globe at the top of the screen (next to 01 mApp)
     //globe array is defined in countries.js file
@@ -207,13 +236,15 @@ class App {
   }
   _setLocalStorage() {
     localStorage.setItem("countryGuesses", JSON.stringify(this._pastGuesses));
+    localStorage.setItem("darkMode", this._darkMode);
   }
 
   _getLocalStorage() {
     const savedData = JSON.parse(localStorage.getItem("countryGuesses"));
+    const darkMode = JSON.parse(localStorage.getItem("darkMode"));
 
-    if (!savedData) return;
-
+    if (!savedData || !darkMode) return;
+    this._darkMode = darkMode;
     this._pastGuesses = savedData;
 
     this._pastGuesses.forEach((guess) => {
@@ -223,7 +254,10 @@ class App {
 
   reset() {
     //call to remove all past guesses from storage and reload page
-    localStorage.removeItem("countryGuesses");
+    // const resetStorage = false;
+    // if (resetStorage){
+    //   localStorage.removeItem("countryGuesses");
+    // }
     location.reload();
   }
 }
