@@ -78,6 +78,14 @@ a:visited {
   justify-content: left;
 }
 
+
+/* Explanation styling */
+.explanation{
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
 /* Button Styling */
 
 .start-btn__container{
@@ -226,13 +234,13 @@ a:visited {
   top: 2%;
   right: 2%;
 }
-.settings{
-  top: 9%;
+/* .settings{
+  top: 8.5%;
   right: 2%;
 }
 .settings:hover{
   cursor: pointer;
-}
+} */
 
 .dark-mode:hover{
   cursor: pointer;

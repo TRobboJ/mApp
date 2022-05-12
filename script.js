@@ -12,6 +12,8 @@ import {
   TILEMAP_SUBDOMAINS,
 } from "./config.js";
 
+// Selectors
+
 const startBtnContainer = document.querySelector(".start-btn__container");
 const easyBtn = document.querySelector(".easy-btn");
 const hardBtn = document.querySelector(".hard-btn");
@@ -22,8 +24,8 @@ const guessesUl = document.querySelector(".guesses__ul");
 const guessesContainer = document.querySelector(".countries-guesses-container");
 const globeIcon = document.querySelector(".globe");
 const darkModeBtn = document.querySelector(".dark-mode");
-const settingsBtn = document.querySelector(".settings");
 const spinnerContainer = document.querySelector(".spinner__container")
+// const settingsBtn = document.querySelector(".settings");
 
 class App {
   //default map variables
@@ -48,7 +50,7 @@ class App {
   _answer;
   //editable options for difficulty
   guessDifficulty = 6; //changes amount of guess elements loaded to sidebar
-  arrayDifficulty; // set through the easy and hard buttons
+  arrayDifficulty; // set through the easy and hard buttons and the functions _setArrayDifficulty
   
 
 
@@ -63,6 +65,7 @@ class App {
     guessesContainer.addEventListener("click", this._newGuess.bind(this));
     darkModeBtn.addEventListener("click", this._toggleDarkMode.bind(this));
   }
+
   _renderMap() {
     this._map = L.map("map").setView(this._coords, this._defaultZoom);
 
@@ -89,6 +92,7 @@ class App {
       }
     ).addTo(this._map);
   }
+
   _renderTurn() {
     this._hideBtn();
     this._getNewAnswer();
@@ -99,40 +103,42 @@ class App {
     this._globeRandomise();
   }
 
+  //these functions are called once after selecting the easy or hard buttons
   _setArrayDifficultyEasy(){
-    this.arrayDifficulty = COUNTRIES_EASY; //COUNTRIES_EASY
+    this.arrayDifficulty = COUNTRIES_EASY; //COUNTRIES_EASY array as defined in config.js
     this._renderTurn();
   }
 
   _setArrayDifficultyHard(){
-    this.arrayDifficulty = COUNTRIES_ALL; //COUNTRIES_ALL
+    this.arrayDifficulty = COUNTRIES_ALL; //COUNTRIES_ALL array as defined in config.js
     this._renderTurn();
   }
 
   _hideBtn() {
     startBtnContainer.classList.add("hidden");
     scrollHint.classList.remove("hidden");
+    startBtnContainer.previousElementSibling.classList.add("hidden"); //hides the explanation paragraph above the buttons
   }
 
   _renderCountryBorder() {
-      const countryName = this._answer;
-      const _this = this;  
-      const outlineOptions = this._outlineOptions;
-      const map = this._map;
+    const countryName = this._answer;
+    const _this = this;  
+    const outlineOptions = this._outlineOptions;
+    const map = this._map;
+
     this._toggleLoadingSpinner();
-        async function getCountryJson(countryName){
-          
+        async function getCountryJson(countryName){          
             try{
                 let response = await fetch(`${OPEN_STREET_MAP_API}?country=${countryName.trim()}&polygon_geojson=1&format=json`);
                 if(!response) throw `Error fetching json`
                 return await response.json();
-            }catch (error){
+            } catch (error){
               throw `Error reaching server: Please refresh and try again. Error: ${error}`
-            }
+              }
           }
       const response = getCountryJson(countryName);
       response.then(function(data){
-        //console log the answer for debugging.
+    // uncomment the below console log to preview the answer for debugging.
         //console.log(data[0].display_name) 
         if (data.length === 0) return; 
         errorMsg.classList.add("hidden");
@@ -148,23 +154,29 @@ class App {
         _this._toggleLoadingSpinner();
       })
   }
+
   _toggleLoadingSpinner(){
     spinnerContainer.classList.toggle("hidden");
   }
+
   _removeCountryBorder() {
     this._layer.remove();
   }
+
   _removeGuessList() {
     guessesUl.innerHTML = "";
   }
+
   _randomNumberGenerator(arr) {
     return Math.floor(Math.random() * arr.length);
   }
+
   _getNewAnswer() {
     this._answer = this.arrayDifficulty[
       this._randomNumberGenerator(this.arrayDifficulty)
     ];
   }
+
   _getRandomCountries() {
     const indexes = [];
     const countries = [];
@@ -183,6 +195,7 @@ class App {
 
     return countries;
   }
+
   _moveMapToCountry(data) {
     if (!data) return;
     this._map.flyTo([data[0].lat, data[0].lon], this._countryZoom, {
@@ -195,6 +208,7 @@ class App {
       },
     });
   }
+
   _renderGuessList(guess) {
     const countries = this._getRandomCountries();
     //add current country(answer) as a guess
@@ -217,12 +231,14 @@ class App {
       guessesUl.appendChild(guessesUl.children[(Math.random() * i) | 0]);
     }
   }
+
   _createAnswerAsObject() {
     if (!this._answer) return;
     let guess = new Guess(this._answer);
     this._pastQuestions.push(guess);
     this._renderGuessList(guess);
   }
+
   _newGuess(event) {
     //make sure the map is loaded first
     if (!this._map) return;
@@ -249,23 +265,25 @@ class App {
     //render turn again
     this._renderTurn();
   }
+
   _toggleDarkMode() {
     this._darkMode = !this._darkMode;
     this._setLocalStorageDarkMode();
     this.reloadPage();
   }
+
   _renderDarkModeIcon()
   {
     let html;
     if(this._darkMode){
       html = `<i class="fa-solid fa-sun dark-mode dm-on"></i>`
-      settingsBtn.classList.remove("dm-off");
-      settingsBtn.classList.add("dm-on");
+      // settingsBtn.classList.remove("dm-off");
+      // settingsBtn.classList.add("dm-on");
     }
     if (!this._darkMode){
       html = `<i class="fa-solid fa-moon dark-mode dm-off" id="dark-mode"></i>`
-      settingsBtn.classList.add("dm-off");
-      settingsBtn.classList.remove("dm-on");
+      // settingsBtn.classList.add("dm-off");
+      // settingsBtn.classList.remove("dm-on");
     }
     
     darkModeBtn.innerHTML = html;
@@ -278,20 +296,24 @@ class App {
     let html = `<i class="fa-solid fa-earth-${GLOBES[random]} fa-3x logo globe"></i>`;
     globeIcon.innerHTML = html;
   }
+
   _errorHandling(err){
     errorMsg.innerText = err;
     errorMsg.classList.remove("hidden");
   }
+
   _renderPastGuesses(guess) {
     let html = `<li class="country country__${guess.status}" data-id="${guess.id}">
       <h2 class="country__title">${guess.countryName}</h2>
     </li>`;
     records.insertAdjacentHTML("afterbegin", html);
   }
+
   _setLocalStorage() {
     localStorage.setItem("countryGuesses", JSON.stringify(this._pastGuesses));
     
   }
+
   _setLocalStorageDarkMode(){
     localStorage.setItem("darkMode", this._darkMode);
   }
@@ -309,15 +331,18 @@ class App {
       this._renderPastGuesses(guess);
     });
   }
+
   reloadPage(){
     //call to reload page only
     location.reload();
   }
+
   resetAll() {
     // call to remove all past guesses from storage and reload page
     localStorage.removeItem("countryGuesses");
     location.reload();
   }
+
 }
 
 const mApp = new App();
@@ -332,7 +357,9 @@ class Guess {
     this.status = status;
     this.id = this._generateUniqueID();
   }
+
   _generateUniqueID() {
     return Math.trunc(Math.random() * Date.now());
   }
+  
 }
