@@ -12,7 +12,7 @@
   --col-incorrect: rgb(195, 70, 70);
 
   --link-col: #81D2C7;
-  --link-clicked: #E0E0E2;
+  --link-clicked: #db8452;
 }
 
 * {
@@ -196,16 +196,19 @@ a:visited {
 .records__break{
   border-top: 2px solid var(--light);
 }
+
 .records__title{
   text-align: center;
   padding: 0.2rem 0;
 }
+
 .records {
   max-height: 180px;
   overflow-x: scroll;
   overflow-y: auto; 
   background-color: var(---light-col);
 }
+
 .ack {
   margin: 0.1rem 0;
   font-size: 0.7rem;
