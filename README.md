@@ -6,4 +6,5 @@ A country guessing game using Leaflet and written with vanilla JS
 
 
 
-View the live demo here: https://thomas-robinson.netlify.app/mapp/mapp
+View the live demo here: https://mapp-tr.netlify.app/
+(Desktop only)
